@@ -1,1 +1,1 @@
-# gmeow-fi-contract
+# gmeowfi-contracts
