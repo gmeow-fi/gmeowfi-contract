@@ -13,7 +13,7 @@ const config: HardhatUserConfig = {
     },
     // for Sepolia testnet
     zircuitTestnet: {
-      url: `https://zircuit1.p2pify.com/`,
+      url: `https://48899.rpc.thirdweb.com`,
       accounts: [process.env.ZIRCUIT_TESTNET_PRIVATE_KEY || ""],
       // gasPrice: 3000000000,
     },
