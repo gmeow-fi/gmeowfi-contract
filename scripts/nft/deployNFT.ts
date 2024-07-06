@@ -8,7 +8,10 @@ async function main() {
 
   const gmeowFiNFT = await deployContract<GmeowFiNFT>(
     "GmeowFiNFT",
-    ["https://picsum.photos/800/1294", 10000],
+    [
+      "ipfs://QmaqJqrksoERsG4aGEFyp1GTarpV2zrcqyubDA3qW7XSJV",
+      ethers.MaxUint256,
+    ],
     "GmeowFiNFT",
     {}
   );

@@ -15,7 +15,7 @@ const config: HardhatUserConfig = {
     zircuitTestnet: {
       url: `https://zircuit1.p2pify.com/`,
       accounts: [process.env.ZIRCUIT_TESTNET_PRIVATE_KEY || ""],
-      gasPrice: 3000000000,
+      // gasPrice: 3000000000,
     },
   },
   etherscan: {

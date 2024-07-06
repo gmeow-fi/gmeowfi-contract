@@ -41,7 +41,7 @@ contract GmeowFiNFT is ERC721, ERC721Enumerable, ERC721Pausable, AccessControl {
     constructor(
         string memory baseTokenURI,
         uint256 maxSupply_
-    ) ERC721("GmeowFiNFT", "Gmeowfi Non-Fungible Token") {
+    ) ERC721("MC-NFT", "Meow Chronicles Non-Fungible Token") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
