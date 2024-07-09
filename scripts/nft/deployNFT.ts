@@ -5,14 +5,10 @@ import { ethers } from "hardhat";
 async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying contracts with the account: ${deployer.address}`);
-  console.log(ethers.MaxUint256);
 
   const gmeowFiNFT = await deployContract<GmeowFiNFT>(
     "GmeowFiNFT",
-    [
-      "ipfs://QmaqJqrksoERsG4aGEFyp1GTarpV2zrcqyubDA3qW7XSJV",
-      ethers.MaxUint256,
-    ],
+    ["ipfs://QmaqJqrksoERsG4aGEFyp1GTarpV2zrcqyubDA3qW7XSJV", 100000],
     "GmeowFiNFT",
     {}
   );
