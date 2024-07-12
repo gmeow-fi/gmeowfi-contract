@@ -6,11 +6,15 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying contracts with the account: ${deployer.address}`);
 
-  const gmeowFiNFT = await deployContract<GmeowFiNFT>(
+  // const gmeowFiNFT = await deployContract<GmeowFiNFT>(
+  //   "GmeowFiNFT",
+  //   ["ipfs://QmaqJqrksoERsG4aGEFyp1GTarpV2zrcqyubDA3qW7XSJV", 100000],
+  //   "GmeowFiNFT",
+  //   {}
+  // );
+  const gmeowFiNFT = await ethers.getContractAt(
     "GmeowFiNFT",
-    ["ipfs://QmaqJqrksoERsG4aGEFyp1GTarpV2zrcqyubDA3qW7XSJV", 100000],
-    "GmeowFiNFT",
-    {}
+    "0x9Ac9b5f0a9D5c2DA141a43f778b6aDb66638fd33"
   );
   const gmeowFiNFTMinter = await deployContract<GMeowFiNFTMinter>(
     "GMeowFiNFTMinter",

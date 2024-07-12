@@ -64,6 +64,49 @@ contract GMeowFiNFTMinter is Pausable, AccessControl {
         IGmeowFiNFT(gmeowFiNFT).safeMint(to);
     }
 
+    function batchMintBySignature(
+        address to,
+        uint256 nonce,
+        uint256 amount,
+        uint256 expiredAt,
+        bytes memory signature
+    ) public whenNotPaused {
+        if (block.timestamp > expiredAt) {
+            revert SignatureExpired();
+        }
+        if (usedNonces[nonce]) {
+            revert NonceAlreadyUsed();
+        }
+        usedNonces[nonce] = true;
+
+        bytes32 message = keccak256(
+            abi.encodePacked(address(this), to, nonce, amount, expiredAt)
+        );
+        bytes32 hash = message.toEthSignedMessageHash();
+        address recoveredAddress = hash.recover(signature);
+
+        if (!signers[recoveredAddress]) {
+            revert InvalidSignature();
+        }
+        mintedCount[to] += amount;
+        for (uint256 i = 0; i < amount; i++) {
+            IGmeowFiNFT(gmeowFiNFT).safeMint(to);
+        }
+    }
+
+    function airdrop(
+        address[] memory tos,
+        uint256[] memory amounts
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(tos.length == amounts.length, "Invalid input");
+        for (uint256 i = 0; i < tos.length; i++) {
+            mintedCount[tos[i]] += amounts[i];
+            for (uint256 j = 0; j < amounts[i]; j++) {
+                IGmeowFiNFT(gmeowFiNFT).safeMint(tos[i]);
+            }
+        }
+    }
+
     function setSigner(
         address _signer,
         bool _isSigner
