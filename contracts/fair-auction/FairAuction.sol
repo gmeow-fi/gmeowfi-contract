@@ -28,6 +28,7 @@ contract FairAuction is Ownable, ReentrancyGuard {
 
     uint256 public immutable START_TIME; // sale start time
     uint256 public immutable END_TIME; // sale end time
+    uint256 public immutable CLAIM_TIME; // claim time
 
     uint256 public constant REFERRAL_SHARE = 3; // 3%
 
@@ -47,14 +48,16 @@ contract FairAuction is Ownable, ReentrancyGuard {
 
     bool public forceClaimable; // safety measure to ensure that we can force claimable to true in case awaited LP token address plan change during the sale
 
-    address public weth = 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
+    address public weth;
 
     constructor(
         IERC20 projectToken,
         IERC20 saleToken,
         IERC20 lpToken,
+        address _weth,
         uint256 startTime,
         uint256 endTime,
+        uint256 claimTime,
         address treasury_,
         uint256 maxToDistribute,
         uint256 minToRaise,
@@ -67,8 +70,10 @@ contract FairAuction is Ownable, ReentrancyGuard {
         PROJECT_TOKEN = projectToken;
         SALE_TOKEN = saleToken;
         LP_TOKEN = lpToken;
+        weth = _weth;
         START_TIME = startTime;
         END_TIME = endTime;
+        CLAIM_TIME = claimTime;
         treasury = treasury_;
         MAX_PROJECT_TOKENS_TO_DISTRIBUTE = maxToDistribute;
         MIN_TOTAL_RAISED_FOR_MAX_PROJECT_TOKEN = minToRaise;
@@ -124,6 +129,13 @@ contract FairAuction is Ownable, ReentrancyGuard {
      */
     modifier isClaimable() {
         require(hasEnded(), "isClaimable: sale has not ended");
+        require(
+            _currentBlockTimestamp() >= CLAIM_TIME,
+            "isClaimable: claim time not reached"
+        );
+        if (LP_TOKEN == IERC20(address(0))) {
+            require(forceClaimable, "isClaimable: no LP tokens");
+        }
         require(
             LP_TOKEN.totalSupply() > 0 || forceClaimable,
             "isClaimable: no LP tokens"
