@@ -249,25 +249,25 @@ contract FairAuction is Ownable, ReentrancyGuard {
             user.discount > 0 && user.contribution < user.discountEligibleAmount
         ) {
             // Get eligible amount for the active user's discount
-            uint256 discountEligibleAmount = user.discountEligibleAmount.sub(
-                user.contribution
-            );
+            uint256 discountEligibleAmount = user.discountEligibleAmount -
+                user.contribution;
             if (discountEligibleAmount > amount) {
                 discountEligibleAmount = amount;
             }
             // Readjust user new allocation
-            allocation = allocation.add(
-                discountEligibleAmount.mul(user.discount).div(100)
-            );
+            allocation =
+                allocation +
+                (discountEligibleAmount * user.discount) /
+                100;
         }
 
         // update raised amounts
-        user.contribution = user.contribution.add(amount);
-        totalRaised = totalRaised.add(amount);
+        user.contribution = user.contribution + amount;
+        totalRaised = totalRaised + amount;
 
         // update allocations
-        user.allocation = user.allocation.add(allocation);
-        totalAllocation = totalAllocation.add(allocation);
+        user.allocation = user.allocation + allocation;
+        totalAllocation = totalAllocation + allocation;
 
         emit Buy(msg.sender, amount);
         // transfer contribution to treasury
@@ -279,10 +279,10 @@ contract FairAuction is Ownable, ReentrancyGuard {
      */
     function claimRefEarnings() public {
         UserInfo storage user = userInfo[msg.sender];
-        uint256 toClaim = user.refEarnings.sub(user.claimedRefEarnings);
+        uint256 toClaim = user.refEarnings - user.claimedRefEarnings;
 
         if (toClaim > 0) {
-            user.claimedRefEarnings = user.claimedRefEarnings.add(toClaim);
+            user.claimedRefEarnings = user.claimedRefEarnings + toClaim;
 
             emit ClaimRefEarnings(msg.sender, toClaim);
             SALE_TOKEN.safeTransfer(msg.sender, toClaim);
@@ -377,7 +377,7 @@ contract FairAuction is Ownable, ReentrancyGuard {
         unsoldTokensBurnt = true;
         PROJECT_TOKEN.transfer(
             0x000000000000000000000000000000000000dEaD,
-            MAX_PROJECT_TOKENS_TO_DISTRIBUTE.sub(totalSold)
+            MAX_PROJECT_TOKENS_TO_DISTRIBUTE - totalSold
         );
     }
 
