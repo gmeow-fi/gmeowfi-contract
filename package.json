@@ -26,6 +26,10 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "@pythnetwork/entropy-sdk-solidity": "^1.5.0",
+    "@pythnetwork/pyth-sdk-solidity": "^3.1.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.4.4",
     "dotenv": "^16.4.5",
     "thirdweb": "^5.34.1"
   }

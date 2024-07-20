@@ -7,8 +7,15 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "../interfaces/IGmeowFiNFT.sol";
 
-contract GmeowFiNFT is ERC721, ERC721Enumerable, ERC721Pausable, AccessControl {
+contract GmeowFiNFT is
+    ERC721,
+    ERC721Enumerable,
+    ERC721Pausable,
+    AccessControl,
+    IGmeowFiNFT
+{
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.UintSet;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -67,6 +74,10 @@ contract GmeowFiNFT is ERC721, ERC721Enumerable, ERC721Pausable, AccessControl {
             revert ExceedMaxSupply();
         }
         _safeMint(to, tokenId);
+    }
+
+    function burn(uint256 tokenId) external override {
+        _burn(tokenId);
     }
 
     function setUri(string memory uri) public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -156,7 +167,7 @@ contract GmeowFiNFT is ERC721, ERC721Enumerable, ERC721Pausable, AccessControl {
     )
         public
         view
-        override(ERC721, ERC721Enumerable, AccessControl)
+        override(ERC721, ERC721Enumerable, AccessControl, IERC165)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

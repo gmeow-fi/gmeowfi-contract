@@ -18,14 +18,18 @@ contract PAWToken is
     ERC20Votes
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant FOUNDATION_ROLE = keccak256("FOUNDATION_ROLE");
     uint256 public constant PERCENT_DENOMINATOR = 10000;
+
+    uint8 private _decimals;
+
+    uint256 private _usdtReserve;
 
     uint256 public blockTimestampLast;
     uint256 public protocolFee = 30; // 0.3%
     uint256 public burnFee = 20; // 0.2%
-    address public protocolFeeTo;
     address public burnFeeTo;
-    IERC20 public sUSDe;
+    IERC20 public usdt;
 
     error InvalidFeeTo(address feeTo);
     error InvalidWithdrawFee(uint256 protocolFee, uint256 burnFee);
@@ -33,19 +37,32 @@ contract PAWToken is
 
     event Deposited(
         address indexed user,
-        uint256 amountSUSDe,
+        uint256 amountUsdt,
         uint256 amountPAW
     );
     event Withdrawed(
         address indexed user,
-        uint256 amountSUSDe,
+        uint256 amountUsdt,
         uint256 amountPAW
     );
     event IncreasePrice(address indexed user, uint256 amount);
+    event FoundationWithdraw(address indexed foundation, uint256 amount);
 
-    constructor() ERC20("PAW Token", "PAW") ERC20Permit("PAW") {
+    constructor(
+        IERC20 _usdt,
+        address _burnFeeTo,
+        uint8 decimals_
+    ) ERC20("PAW Token", "PAW") ERC20Permit("PAW") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
+        _grantRole(FOUNDATION_ROLE, msg.sender);
+        burnFeeTo = _burnFeeTo;
+        usdt = _usdt;
+        _decimals = decimals_;
+    }
+
+    function decimals() public view override returns (uint8) {
+        return _decimals;
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -57,13 +74,14 @@ contract PAWToken is
     }
 
     function deposit(uint256 amount) public {
-        (uint256 usdeReserve, uint256 pawReserve, ) = getReserves();
+        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
         uint256 amountPAW = amount;
-        if (usdeReserve != 0) {
-            amountPAW = (amount * pawReserve) / usdeReserve;
+        if (usdtReserve != 0) {
+            amountPAW = (amount * pawReserve) / usdtReserve;
         }
 
-        sUSDe.transferFrom(msg.sender, address(this), amount);
+        usdt.transferFrom(msg.sender, address(this), amount);
+        _usdtReserve += amount;
         _mint(msg.sender, amountPAW);
 
         blockTimestampLast = block.timestamp;
@@ -71,39 +89,44 @@ contract PAWToken is
     }
 
     function withdraw(uint256 amount) public {
-        (uint256 usdeReserve, uint256 pawReserve, ) = getReserves();
+        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
         if (amount == 0 || amount == pawReserve) {
             revert InvalidInputAmount(amount);
         }
-        uint256 amountSUSDe = amount;
-        if (usdeReserve != 0) {
-            amountSUSDe = (amount * usdeReserve) / pawReserve;
+        uint256 amountUsdt = amount;
+        if (usdtReserve != 0) {
+            amountUsdt = (amount * usdtReserve) / pawReserve;
         }
-        uint256 protocolFeeAmount = (amountSUSDe * protocolFee) /
+        uint256 protocolFeeAmount = (amountUsdt * protocolFee) /
             PERCENT_DENOMINATOR;
-        sUSDe.transfer(protocolFeeTo, protocolFeeAmount);
-        uint256 burnFeeAmount = (amountSUSDe * burnFee) / PERCENT_DENOMINATOR;
-        amountSUSDe = amountSUSDe - protocolFeeAmount - burnFeeAmount;
-        sUSDe.transfer(burnFeeTo, burnFeeAmount);
+        uint256 burnFeeAmount = (amountUsdt * burnFee) / PERCENT_DENOMINATOR;
+        amountUsdt = amountUsdt - protocolFeeAmount - burnFeeAmount;
+        usdt.transfer(burnFeeTo, burnFeeAmount);
         _burn(msg.sender, amount);
-        sUSDe.transfer(msg.sender, amountSUSDe);
+        usdt.transfer(msg.sender, amountUsdt);
+        _usdtReserve -= amountUsdt;
         blockTimestampLast = block.timestamp;
-        emit Withdrawed(msg.sender, amountSUSDe, amount);
+        emit Withdrawed(msg.sender, amountUsdt, amount);
     }
 
-    function setFeeTo(
-        address _protocolFeeTo,
-        address _burnFeeTo
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (_protocolFeeTo == address(0) || _burnFeeTo == address(0)) {
-            revert InvalidFeeTo(_protocolFeeTo);
+    function FoundationWithdrawForInvest(
+        address to,
+        uint256 amount
+    ) public onlyRole(FOUNDATION_ROLE) {
+        usdt.transfer(to, amount);
+        emit FoundationWithdraw(to, amount);
+    }
+
+    function setFeeTo(address _burnFeeTo) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (_burnFeeTo == address(0)) {
+            revert InvalidFeeTo(_burnFeeTo);
         }
-        protocolFeeTo = _protocolFeeTo;
         burnFeeTo = _burnFeeTo;
     }
 
     function increasePrice(uint256 amount) public {
-        sUSDe.transferFrom(msg.sender, address(this), amount);
+        usdt.transferFrom(msg.sender, address(this), amount);
+        _usdtReserve += amount;
         emit IncreasePrice(msg.sender, amount);
     }
 
@@ -111,18 +134,18 @@ contract PAWToken is
         public
         view
         returns (
-            uint256 usdeReserve,
+            uint256 usdtReserve,
             uint256 pawReserve,
             uint256 _blockTimestampLast
         )
     {
-        usdeReserve = sUSDe.balanceOf(address(this));
+        usdtReserve = _usdtReserve;
         pawReserve = totalSupply();
         _blockTimestampLast = blockTimestampLast;
     }
 
-    function setSUSDe(address _sUSDe) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        sUSDe = IERC20(_sUSDe);
+    function setUsdt(address _usdt) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        usdt = IERC20(_usdt);
     }
 
     function setWithdrawFee(
@@ -156,8 +179,8 @@ contract PAWToken is
     }
 
     function getPrice() public view returns (uint256 price) {
-        (uint256 usdeReserve, uint256 pawReserve, ) = getReserves();
-        price = (usdeReserve * 1e8) / pawReserve;
+        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
+        price = (usdtReserve * 1e8) / pawReserve;
     }
     // The following functions are overrides required by Solidity.
 
