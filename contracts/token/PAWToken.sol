@@ -23,33 +23,30 @@ contract PAWToken is
 
     uint8 private _decimals;
 
-    uint256 private _usdtReserve;
+    uint256 private _usdReserve;
 
     uint256 public blockTimestampLast;
+    uint256 public totalWithdrawedByFoundation;
     uint256 public protocolFee = 30; // 0.3%
     uint256 public burnFee = 20; // 0.2%
     address public burnFeeTo;
-    IERC20 public usdt;
+    IERC20 public usd;
 
     error InvalidFeeTo(address feeTo);
     error InvalidWithdrawFee(uint256 protocolFee, uint256 burnFee);
     error InvalidInputAmount(uint256 amount);
 
-    event Deposited(
-        address indexed user,
-        uint256 amountUsdt,
-        uint256 amountPAW
-    );
+    event Deposited(address indexed user, uint256 amountUSD, uint256 amountPAW);
     event Withdrawed(
         address indexed user,
-        uint256 amountUsdt,
+        uint256 amountUSD,
         uint256 amountPAW
     );
     event IncreasePrice(address indexed user, uint256 amount);
     event FoundationWithdraw(address indexed foundation, uint256 amount);
 
     constructor(
-        IERC20 _usdt,
+        IERC20 _usd,
         address _burnFeeTo,
         uint8 decimals_
     ) ERC20("PAW Token", "PAW") ERC20Permit("PAW") {
@@ -57,7 +54,7 @@ contract PAWToken is
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(FOUNDATION_ROLE, msg.sender);
         burnFeeTo = _burnFeeTo;
-        usdt = _usdt;
+        usd = _usd;
         _decimals = decimals_;
     }
 
@@ -74,14 +71,14 @@ contract PAWToken is
     }
 
     function deposit(uint256 amount) public {
-        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
+        (uint256 usdReserve, uint256 pawReserve, ) = getReserves();
         uint256 amountPAW = amount;
-        if (usdtReserve != 0) {
-            amountPAW = (amount * pawReserve) / usdtReserve;
+        if (usdReserve != 0) {
+            amountPAW = (amount * pawReserve) / usdReserve;
         }
 
-        usdt.transferFrom(msg.sender, address(this), amount);
-        _usdtReserve += amount;
+        usd.transferFrom(msg.sender, address(this), amount);
+        _usdReserve += amount;
         _mint(msg.sender, amountPAW);
 
         blockTimestampLast = block.timestamp;
@@ -89,31 +86,41 @@ contract PAWToken is
     }
 
     function withdraw(uint256 amount) public {
-        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
+        (uint256 usdReserve, uint256 pawReserve, ) = getReserves();
         if (amount == 0 || amount == pawReserve) {
             revert InvalidInputAmount(amount);
         }
-        uint256 amountUsdt = amount;
-        if (usdtReserve != 0) {
-            amountUsdt = (amount * usdtReserve) / pawReserve;
+        uint256 amountUSD = amount;
+        if (usdReserve != 0) {
+            amountUSD = (amount * usdReserve) / pawReserve;
         }
-        uint256 protocolFeeAmount = (amountUsdt * protocolFee) /
+        uint256 protocolFeeAmount = (amountUSD * protocolFee) /
             PERCENT_DENOMINATOR;
-        uint256 burnFeeAmount = (amountUsdt * burnFee) / PERCENT_DENOMINATOR;
-        amountUsdt = amountUsdt - protocolFeeAmount - burnFeeAmount;
-        usdt.transfer(burnFeeTo, burnFeeAmount);
+        uint256 burnFeeAmount = (amountUSD * burnFee) / PERCENT_DENOMINATOR;
+        amountUSD = amountUSD - protocolFeeAmount - burnFeeAmount;
+        usd.transfer(burnFeeTo, burnFeeAmount);
         _burn(msg.sender, amount);
-        usdt.transfer(msg.sender, amountUsdt);
-        _usdtReserve -= amountUsdt;
+        usd.transfer(msg.sender, amountUSD);
+        _usdReserve -= amountUSD;
         blockTimestampLast = block.timestamp;
-        emit Withdrawed(msg.sender, amountUsdt, amount);
+        emit Withdrawed(msg.sender, amountUSD, amount);
     }
 
     function FoundationWithdrawForInvest(
         address to,
         uint256 amount
     ) public onlyRole(FOUNDATION_ROLE) {
-        usdt.transfer(to, amount);
+        usd.transfer(to, amount);
+        totalWithdrawedByFoundation += amount;
+        emit FoundationWithdraw(to, amount);
+    }
+
+    function FoundationPayback(
+        address to,
+        uint256 amount
+    ) public onlyRole(FOUNDATION_ROLE) {
+        usd.transferFrom(to, address(this), amount);
+        totalWithdrawedByFoundation -= amount;
         emit FoundationWithdraw(to, amount);
     }
 
@@ -125,8 +132,8 @@ contract PAWToken is
     }
 
     function increasePrice(uint256 amount) public {
-        usdt.transferFrom(msg.sender, address(this), amount);
-        _usdtReserve += amount;
+        usd.transferFrom(msg.sender, address(this), amount);
+        _usdReserve += amount;
         emit IncreasePrice(msg.sender, amount);
     }
 
@@ -134,18 +141,18 @@ contract PAWToken is
         public
         view
         returns (
-            uint256 usdtReserve,
+            uint256 usdReserve,
             uint256 pawReserve,
             uint256 _blockTimestampLast
         )
     {
-        usdtReserve = _usdtReserve;
+        usdReserve = _usdReserve;
         pawReserve = totalSupply();
         _blockTimestampLast = blockTimestampLast;
     }
 
-    function setUsdt(address _usdt) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        usdt = IERC20(_usdt);
+    function setUSD(address _usd) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        usd = IERC20(_usd);
     }
 
     function setWithdrawFee(
@@ -179,8 +186,8 @@ contract PAWToken is
     }
 
     function getPrice() public view returns (uint256 price) {
-        (uint256 usdtReserve, uint256 pawReserve, ) = getReserves();
-        price = (usdtReserve * 1e8) / pawReserve;
+        (uint256 usdReserve, uint256 pawReserve, ) = getReserves();
+        price = (usdReserve * 1e8) / pawReserve;
     }
     // The following functions are overrides required by Solidity.
 

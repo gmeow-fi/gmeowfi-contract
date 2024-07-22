@@ -109,7 +109,9 @@ contract GMeowFiBox is
         txFees[BoxType.Sip] = 0.000075 ether;
         txFees[BoxType.Sweat] = 0.0001 ether;
         txFees[BoxType.Treasure] = 0.00012 ether;
-        paw.approve(address(_lottery), type(uint256).max);
+        if (address(_lottery) != address(0)) {
+            paw.approve(address(_lottery), type(uint256).max);
+        }
         usd.approve(address(_paw), type(uint256).max);
         entropy = IEntropy(_entropy);
         entropyProvider = _entropyProvider;
@@ -195,13 +197,16 @@ contract GMeowFiBox is
                 lotteryAmount + refillAmount
             );
             paw.deposit(refillAmount);
-            uint256 balanceBefore = paw.balanceOf(address(this));
-            paw.deposit(lotteryAmount);
-            uint256 balanceAfter = paw.balanceOf(address(this));
-            lottery.injectFunds(
-                lottery.viewCurrentLotteryId(),
-                balanceAfter - balanceBefore
-            );
+
+            if (lotteryAmount > 0) {
+                uint256 balanceBefore = paw.balanceOf(address(this));
+                paw.deposit(lotteryAmount);
+                uint256 balanceAfter = paw.balanceOf(address(this));
+                lottery.injectFunds(
+                    lottery.viewCurrentLotteryId(),
+                    balanceAfter - balanceBefore
+                );
+            }
         } else if (paymentToken == PaymentToken.PAW) {
             uint256 price = paw.getPrice();
             uint256 pawAmount = (amountBox * boxPrice[boxType] * 1e8 * 95) /
@@ -222,7 +227,7 @@ contract GMeowFiBox is
                     address(this),
                     lotteryAmount + refillAmount
                 );
-                if (refillAmount > 0) {
+                if (lotteryAmount > 0) {
                     lottery.injectFunds(
                         lottery.viewCurrentLotteryId(),
                         lotteryAmount
@@ -385,6 +390,7 @@ contract GMeowFiBox is
 
     function setLottery(ILottery _lottery) external onlyOwner {
         lottery = _lottery;
+        paw.approve(address(_lottery), type(uint256).max);
         lottery.viewCurrentLotteryId();
     }
 

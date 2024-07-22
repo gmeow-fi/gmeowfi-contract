@@ -6,26 +6,26 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying contracts with the account: ${deployer.address}`);
 
-  const usdt = await ethers.getContractAt(
+  const usde = await ethers.getContractAt(
     "ERC20",
-    "0x2b533475875b518144c2Cf8558d799BC6FB11716"
+    "0xF9755e4aDcdc81Aa982fc74b7Ae00aa17246Bc9d"
   );
   const paw = await deployContract<PAWToken>(
     "PAWToken",
     [
-      await usdt.getAddress(),
+      await usde.getAddress(),
       await deployer.getAddress(),
-      await usdt.decimals(),
+      await usde.decimals(),
     ],
     "PAWToken",
     {}
   );
   await sendTxn(
-    usdt.approve(await paw.getAddress(), ethers.MaxUint256),
+    usde.approve(await paw.getAddress(), ethers.MaxUint256),
     "approve"
   );
   await sendTxn(
-    paw.deposit(BigInt("10000") * (await usdt.decimals())),
+    paw.deposit(BigInt("10000") * (await usde.decimals())),
     "deposit"
   );
 }

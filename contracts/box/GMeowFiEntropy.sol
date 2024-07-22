@@ -43,7 +43,10 @@ contract GMeowFiEntropy is Pausable, Ownable, IEntropy {
             whitelist[msg.sender],
             "GMeowFiEntropy: sender not whitelisted"
         );
-        PythStructs.Price memory price = pyth.getPriceUnsafe(priceId);
+        PythStructs.Price memory price;
+        if (address(pyth) != address(0)) {
+            price = pyth.getPriceUnsafe(priceId);
+        }
         bytes32 combinedRandomness = keccak256(
             abi.encode(
                 lastRandomness,

@@ -19,7 +19,7 @@ contract GMeowFiLottery is ReentrancyGuard, ILottery, Ownable {
 
     uint256 public constant GMEOWFI_TICKET_ID = 1;
 
-    address public monoSwapNFT;
+    address public gMeowFiNFT;
 
     address public injectorAddress;
     address public operatorAddress;
@@ -154,11 +154,11 @@ contract GMeowFiLottery is ReentrancyGuard, ILottery, Ownable {
     constructor(
         address _rewardTokenAddress,
         address _randomGeneratorAddress,
-        address _monoSwapNFT
+        address _gMeowFiNFT
     ) Ownable(msg.sender) {
         rewardToken = IERC20(_rewardTokenAddress);
         randomGenerator = IRandomNumberGenerator(_randomGeneratorAddress);
-        monoSwapNFT = _monoSwapNFT;
+        gMeowFiNFT = _gMeowFiNFT;
 
         // Initializes a mapping
         _bracketCalculator[0] = 1;
@@ -178,7 +178,7 @@ contract GMeowFiLottery is ReentrancyGuard, ILottery, Ownable {
     function buyTickets(
         uint256 _lotteryId,
         uint32[] memory _ticketNumbers,
-        bool _useMonoSwapTicket
+        bool _useNFTTicket
     ) external override notContract nonReentrant {
         require(_ticketNumbers.length != 0, "No ticket specified");
         require(
@@ -195,7 +195,7 @@ contract GMeowFiLottery is ReentrancyGuard, ILottery, Ownable {
             "Lottery is over"
         );
 
-        if (!_useMonoSwapTicket) {
+        if (!_useNFTTicket) {
             // Calculate number of Reward to this contract
             uint256 amountRewardToTransfer = _calculateTotalPriceForBulkTickets(
                 _lotteries[_lotteryId].discountDivisor,
@@ -214,7 +214,7 @@ contract GMeowFiLottery is ReentrancyGuard, ILottery, Ownable {
             _lotteries[_lotteryId]
                 .amountCollectedInReward += amountRewardToTransfer;
         } else {
-            IGmeowFiMultiNFT(monoSwapNFT).burn(
+            IGmeowFiMultiNFT(gMeowFiNFT).burn(
                 msg.sender,
                 GMEOWFI_TICKET_ID,
                 _ticketNumbers.length
