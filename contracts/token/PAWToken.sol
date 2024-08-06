@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
@@ -12,14 +11,13 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract PAWToken is
     ERC20,
     ERC20Burnable,
-    ERC20Pausable,
     AccessControl,
     ERC20Permit,
     ERC20Votes
 {
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant FOUNDATION_ROLE = keccak256("FOUNDATION_ROLE");
     uint256 public constant PERCENT_DENOMINATOR = 10000;
+    uint256 public constant MAX_FEE = 1000; // 10%
 
     uint8 private _decimals;
 
@@ -44,6 +42,9 @@ contract PAWToken is
     );
     event IncreasePrice(address indexed user, uint256 amount);
     event FoundationWithdraw(address indexed foundation, uint256 amount);
+    event FoundationPayback(address indexed foundation, uint256 amount);
+    event UpdateFeeTo(address indexed feeTo);
+    event UpdateWithdrawFee(uint256 protocolFee, uint256 burnFee);
 
     constructor(
         IERC20 _usd,
@@ -51,7 +52,6 @@ contract PAWToken is
         uint8 decimals_
     ) ERC20("PAW Token", "PAW") ERC20Permit("PAW") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(FOUNDATION_ROLE, msg.sender);
         burnFeeTo = _burnFeeTo;
         usd = _usd;
@@ -60,14 +60,6 @@ contract PAWToken is
 
     function decimals() public view override returns (uint8) {
         return _decimals;
-    }
-
-    function pause() public onlyRole(PAUSER_ROLE) {
-        _pause();
-    }
-
-    function unpause() public onlyRole(PAUSER_ROLE) {
-        _unpause();
     }
 
     function deposit(uint256 amount) public {
@@ -106,7 +98,7 @@ contract PAWToken is
         emit Withdrawed(msg.sender, amountUSD, amount);
     }
 
-    function FoundationWithdrawForInvest(
+    function foundationWithdrawForInvest(
         address to,
         uint256 amount
     ) public onlyRole(FOUNDATION_ROLE) {
@@ -115,13 +107,12 @@ contract PAWToken is
         emit FoundationWithdraw(to, amount);
     }
 
-    function FoundationPayback(
-        address to,
+    function foundationPayback(
         uint256 amount
     ) public onlyRole(FOUNDATION_ROLE) {
-        usd.transferFrom(to, address(this), amount);
+        usd.transferFrom(msg.sender, address(this), amount);
         totalWithdrawedByFoundation -= amount;
-        emit FoundationWithdraw(to, amount);
+        emit FoundationPayback(msg.sender, amount);
     }
 
     function setFeeTo(address _burnFeeTo) public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -129,6 +120,7 @@ contract PAWToken is
             revert InvalidFeeTo(_burnFeeTo);
         }
         burnFeeTo = _burnFeeTo;
+        emit UpdateFeeTo(_burnFeeTo);
     }
 
     function increasePrice(uint256 amount) public {
@@ -151,16 +143,12 @@ contract PAWToken is
         _blockTimestampLast = blockTimestampLast;
     }
 
-    function setUSD(address _usd) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        usd = IERC20(_usd);
-    }
-
     function setWithdrawFee(
         uint256 _protocolFee,
         uint256 _burnFee
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         if (
-            _protocolFee + _burnFee >= PERCENT_DENOMINATOR ||
+            _protocolFee + _burnFee > MAX_FEE ||
             _protocolFee == 0 ||
             _burnFee == 0
         ) {
@@ -168,6 +156,7 @@ contract PAWToken is
         }
         protocolFee = _protocolFee;
         burnFee = _burnFee;
+        emit UpdateWithdrawFee(_protocolFee, _burnFee);
     }
 
     function getAmountOut(
@@ -195,7 +184,7 @@ contract PAWToken is
         address from,
         address to,
         uint256 value
-    ) internal override(ERC20, ERC20Pausable, ERC20Votes) {
+    ) internal override(ERC20, ERC20Votes) {
         super._update(from, to, value);
     }
 
