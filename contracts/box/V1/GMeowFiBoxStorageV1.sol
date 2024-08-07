@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "./GMeowfiBoxTypeV1.sol";
 // import "../../interfaces/IGMeowFiBoxStorage.sol";
 
-contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
+contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
     mapping(BoxType => uint256[]) public boxRewardsThreshold;
     mapping(BoxType => BoxReward[]) public boxRewards;
 
@@ -35,31 +35,67 @@ contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
             BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 10 ether})
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 10 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.005 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 7 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0035 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 5 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0025 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 3 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0015 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 1 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0005 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 0.8 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0004 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 0.4 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0002 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 0.2 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0001 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Fun].push(
-            BoxReward({availableNFT: false, ethAmount: 0.1 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.00005 ether,
+                xGMAmount: 0
+            })
         );
 
         // Joy
@@ -93,41 +129,90 @@ contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
         boxRewards[BoxType.Joy].push(
             BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 10 ether})
         );
+
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 100 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.05 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 50 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.025 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 20 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.01 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 10 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.005 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 8 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0035 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 4 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0025 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 2 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0015 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 1 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0005 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 0.8 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0004 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 0.4 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0002 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 0.2 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0001 ether,
+                xGMAmount: 0
+            })
         );
         boxRewards[BoxType.Joy].push(
-            BoxReward({availableNFT: false, ethAmount: 0.1 ether, xGMAmount: 0})
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.00005 ether,
+                xGMAmount: 0
+            })
         );
         // Sip
 
@@ -165,44 +250,93 @@ contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
         boxRewards[BoxType.Sip].push(
             BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
         );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 200 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 100 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 50 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 20 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 10 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 7 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 5 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 3 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 1 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0.8 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0.6 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0.2 ether, xGMAmount: 0})
-        );
+
         boxRewards[BoxType.Sip].push(
             BoxReward({availableNFT: false, ethAmount: 0.1 ether, xGMAmount: 0})
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.05 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.01 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0035 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0015 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0004 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0002 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0001 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sip].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.00005 ether,
+                xGMAmount: 0
+            })
         );
         // Sweat
 
@@ -241,47 +375,96 @@ contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
         boxRewards[BoxType.Sweat].push(
             BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
         );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 400 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 200 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 100 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 50 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 20 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 10 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 7 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 5 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 3 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 1 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0.8 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0.4 ether, xGMAmount: 0})
-        );
+
         boxRewards[BoxType.Sweat].push(
             BoxReward({availableNFT: false, ethAmount: 0.2 ether, xGMAmount: 0})
         );
         boxRewards[BoxType.Sweat].push(
             BoxReward({availableNFT: false, ethAmount: 0.1 ether, xGMAmount: 0})
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.05 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.01 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0035 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0015 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0004 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0002 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0001 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Sweat].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.00005 ether,
+                xGMAmount: 0
+            })
         );
 
         // Treasure
@@ -322,50 +505,99 @@ contract GMeowFiBoxStorage is IGMeowFiBoxStorage {
         boxRewards[BoxType.Treasure].push(
             BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
         );
+
         boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 600 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 400 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 200 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 100 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 50 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 20 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 10 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 7 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 5 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 3 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 1 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0.8 ether, xGMAmount: 0})
-        );
-        boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0.4 ether, xGMAmount: 0})
+            BoxReward({availableNFT: false, ethAmount: 0.3 ether, xGMAmount: 0})
         );
         boxRewards[BoxType.Treasure].push(
             BoxReward({availableNFT: false, ethAmount: 0.2 ether, xGMAmount: 0})
         );
         boxRewards[BoxType.Treasure].push(
             BoxReward({availableNFT: false, ethAmount: 0.1 ether, xGMAmount: 0})
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.05 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.01 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0035 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0025 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0015 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0005 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0004 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0002 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.0001 ether,
+                xGMAmount: 0
+            })
+        );
+        boxRewards[BoxType.Treasure].push(
+            BoxReward({
+                availableNFT: false,
+                ethAmount: 0.00005 ether,
+                xGMAmount: 0
+            })
         );
     }
 

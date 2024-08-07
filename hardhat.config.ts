@@ -34,22 +34,39 @@ const config: HardhatUserConfig = {
     },
     // for Sepolia testnet
     zircuitTestnet: {
-      url: `https://48899.rpc.thirdweb.com`,
+      url: `https://zircuit1.p2pify.com/`,
       accounts: [process.env.ZIRCUIT_TESTNET_PRIVATE_KEY || ""],
-      // gasPrice: 3000000000,
+      gasPrice: 3000000000,
+    },
+    zircuit: {
+      url: "https://zircuit1-mainnet.p2pify.com/",
+      accounts: process.env.ZIRCUIT_PRIVATE_KEY
+        ? [process.env.ZIRCUIT_PRIVATE_KEY]
+        : [],
+      chainId: 48900,
     },
   },
   etherscan: {
     apiKey: {
       zircuitTestnet: process.env.SCAN_API_KEY || "",
+      zircuit: process.env.SCAN_API_KEY || "",
     },
     customChains: [
       {
         network: "zircuitTestnet",
         chainId: 48899,
         urls: {
+          apiURL:
+            "https://explorer.testnet.zircuit.com/api/contractVerifyHardhat",
+          browserURL: "https://explorer.testnet.zircuit.com/",
+        },
+      },
+      {
+        network: "zircuit",
+        chainId: 48900,
+        urls: {
           apiURL: "https://explorer.zircuit.com/api/contractVerifyHardhat",
-          browserURL: "https://explorer.zircuit.com",
+          browserURL: "https://explorermainnet.zircuit.com/",
         },
       },
     ],

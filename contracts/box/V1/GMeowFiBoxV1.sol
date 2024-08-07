@@ -36,7 +36,7 @@ contract GMeowFiBoxV1 is
 
     IGmeowFiMultiNFT public gmeowFiMultiNFT;
     IGmeowFiNFT public gmeowFiNFT;
-    IGMeowFiBoxStorage public gmeowFiBoxStorage;
+    IGMeowFiBoxStorageV1 public gmeowFiBoxStorage;
     IXGM public xGM;
     IWETH public weth;
 
@@ -81,7 +81,7 @@ contract GMeowFiBoxV1 is
     constructor(
         IGmeowFiMultiNFT _gmeowFiMultiNFT,
         IGmeowFiNFT _gmeowFiNFT,
-        IGMeowFiBoxStorage _gmeowFiBoxStorage,
+        IGMeowFiBoxStorageV1 _gmeowFiBoxStorage,
         IXGM _xGM,
         IWETH _weth,
         address _entropy,
@@ -108,11 +108,11 @@ contract GMeowFiBoxV1 is
         ticketRewards[BoxType.Sweat] = 4;
         ticketRewards[BoxType.Treasure] = 5;
         // Set up box price for each box type
-        boxPrice[BoxType.Fun] = 1 ether;
-        boxPrice[BoxType.Joy] = 2 ether;
-        boxPrice[BoxType.Sip] = 3 ether;
-        boxPrice[BoxType.Sweat] = 4 ether;
-        boxPrice[BoxType.Treasure] = 5 ether;
+        boxPrice[BoxType.Fun] = 0.0005 ether;
+        boxPrice[BoxType.Joy] = 0.001 ether;
+        boxPrice[BoxType.Sip] = 0.0015 ether;
+        boxPrice[BoxType.Sweat] = 0.002 ether;
+        boxPrice[BoxType.Treasure] = 0.0025 ether;
         // Set up box type for each ticket
         boxClaw[BoxType.Fun] = FUN_CLAW_ID;
         boxClaw[BoxType.Joy] = JOY_CLAW_ID;
@@ -382,7 +382,7 @@ contract GMeowFiBoxV1 is
     function setGMeowFiBoxStorage(
         address _gmeowFiBoxStorage
     ) external onlyOwner {
-        gmeowFiBoxStorage = IGMeowFiBoxStorage(_gmeowFiBoxStorage);
+        gmeowFiBoxStorage = IGMeowFiBoxStorageV1(_gmeowFiBoxStorage);
     }
 
     // This method is required by the IEntropyConsumer interface.

@@ -39,26 +39,15 @@ async function main() {
   //   multiNFT.setApprovalForAll(await gmeowFiBox.getAddress(), true),
   //   "multiNFT setApprovalForAll"
   // );
-  for (let i = 0; i < 5; i++) {
-    await sendTxn(
-      gMeowFiBox.openBox(1, i, 0, false, {
-        value: await gMeowFiBox.txFees(i),
-      }),
-      `openBox ${i}`
-    );
-    await sendTxn(
-      gMeowFiBox.openBox(1, i, 1, false, {
-        value: await gMeowFiBox.txFees(i),
-      }),
-      `openBox ${i}`
-    );
-    await sendTxn(
-      gMeowFiBox.openBox(1, i, 2, false, {
-        value: await gMeowFiBox.txFees(i),
-      }),
-      `openBox ${i}`
-    );
-  }
+  await sendTxn(
+    multiNFT.mintBatch(
+      "0x04a4c59A13F4eDC0990f4E153841C4251021aed8",
+      [1, 2, 3, 4, 5, 6],
+      [10, 10, 10, 10, 10, 10],
+      "0x"
+    ),
+    "mintBatch"
+  );
 }
 
 main()

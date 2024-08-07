@@ -34,7 +34,7 @@ struct RequestRandom {
     uint64 sequenceNumber;
 }
 
-interface IGMeowFiBoxStorage {
+interface IGMeowFiBoxStorageV1 {
     function getRewardByRandomNumber(
         BoxType boxType,
         uint256 random

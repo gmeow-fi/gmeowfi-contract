@@ -3,6 +3,8 @@ import { deployContract, sendTxn } from "../helper";
 import {
   GMeowFiBox,
   GMeowFiBoxStorage,
+  GMeowFiBoxStorageV1,
+  GMeowFiBoxV1,
   GMeowFiEntropy,
 } from "../../typechain-types";
 
@@ -13,9 +15,9 @@ async function main() {
     "TestToken",
     "0x77f753D9bD8346F5c8ae0015d7cC84b266422694"
   );
-  const usde = await ethers.getContractAt(
-    "TestToken",
-    "0xF9755e4aDcdc81Aa982fc74b7Ae00aa17246Bc9d"
+  const weth = await ethers.getContractAt(
+    "ERC20",
+    "0x4200000000000000000000000000000000000006"
   );
   const paw = await ethers.getContractAt(
     "PAWToken",
@@ -29,10 +31,10 @@ async function main() {
     "GmeowFiNFT",
     "0x9Ac9b5f0a9D5c2DA141a43f778b6aDb66638fd33"
   );
-  const boxStorage = await deployContract<GMeowFiBoxStorage>(
-    "GMeowFiBoxStorage",
+  const boxStorage = await deployContract<GMeowFiBoxStorageV1>(
+    "GMeowFiBoxStorageV1",
     [],
-    "GMeowFiBoxStorage",
+    "GMeowFiBoxStorageV1",
     {}
   );
   const entropy = await deployContract<GMeowFiEntropy>(
@@ -41,21 +43,19 @@ async function main() {
     "GMeowFiEntropy",
     {}
   );
-  const gMeowFiBox = await deployContract<GMeowFiBox>(
-    "GMeowFiBox",
+  const gMeowFiBox = await deployContract<GMeowFiBoxV1>(
+    "GMeowFiBoxV1",
     [
       await multiNFT.getAddress(),
       await gmeowFiNFT.getAddress(),
       await boxStorage.getAddress(),
-      await paw.getAddress(),
       await xGM.getAddress(),
-      await usde.getAddress(),
+      await weth.getAddress(),
       await entropy.getAddress(),
       await deployer.getAddress(), // entropy provider
       await deployer.getAddress(), // admin
-      ethers.ZeroAddress, // lottery - not deployed yet
     ],
-    "GMeowFiBox",
+    "GMeowFiBoxV1",
     {}
   );
 
@@ -82,13 +82,13 @@ async function main() {
     xGM.transfer(await gMeowFiBox.getAddress(), ethers.parseEther("10000")),
     "transfer xGM"
   );
-  
-  // for (let i = 0; i < 5; i++) {
-  //   await sendTxn(
-  //     gmeowFiNFT.safeMint(await gMeowFiBox.getAddress()),
-  //     "safeMint GmeowFiNFT"
-  //   );
-  // }
+
+  for (let i = 0; i < 5; i++) {
+    await sendTxn(
+      gmeowFiNFT.safeMint(await gMeowFiBox.getAddress()),
+      "safeMint GmeowFiNFT"
+    );
+  }
   // for (let i = 1; i <= 6; i++) {
   //   await sendTxn(
   //     multiNFT.mint(await deployer.getAddress(), i, 100, "0x"),
