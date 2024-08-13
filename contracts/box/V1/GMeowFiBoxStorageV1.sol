@@ -12,18 +12,18 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
         // Set up box rewards threshold for each box type
         // Fun
 
-        boxRewardsThreshold[BoxType.Fun].push(125);
-        boxRewardsThreshold[BoxType.Fun].push(18125);
-        boxRewardsThreshold[BoxType.Fun].push(48125);
-        boxRewardsThreshold[BoxType.Fun].push(49625);
-        boxRewardsThreshold[BoxType.Fun].push(52125);
-        boxRewardsThreshold[BoxType.Fun].push(64125);
-        boxRewardsThreshold[BoxType.Fun].push(119125);
-        boxRewardsThreshold[BoxType.Fun].push(199125);
-        boxRewardsThreshold[BoxType.Fun].push(299125);
-        boxRewardsThreshold[BoxType.Fun].push(419125);
-        boxRewardsThreshold[BoxType.Fun].push(519125);
-        boxRewardsThreshold[BoxType.Fun].push(594125);
+        boxRewardsThreshold[BoxType.Fun].push(15000);
+        boxRewardsThreshold[BoxType.Fun].push(33000);
+        boxRewardsThreshold[BoxType.Fun].push(63000);
+        boxRewardsThreshold[BoxType.Fun].push(64500);
+        boxRewardsThreshold[BoxType.Fun].push(67000);
+        boxRewardsThreshold[BoxType.Fun].push(79000);
+        boxRewardsThreshold[BoxType.Fun].push(134000);
+        boxRewardsThreshold[BoxType.Fun].push(214000);
+        boxRewardsThreshold[BoxType.Fun].push(314000);
+        boxRewardsThreshold[BoxType.Fun].push(434000);
+        boxRewardsThreshold[BoxType.Fun].push(534000);
+        boxRewardsThreshold[BoxType.Fun].push(609000);
 
         boxRewards[BoxType.Fun].push(
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
@@ -100,22 +100,22 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
 
         // Joy
 
-        boxRewardsThreshold[BoxType.Joy].push(125);
-        boxRewardsThreshold[BoxType.Joy].push(9125);
-        boxRewardsThreshold[BoxType.Joy].push(27125);
-        boxRewardsThreshold[BoxType.Joy].push(57125);
-        boxRewardsThreshold[BoxType.Joy].push(57625);
-        boxRewardsThreshold[BoxType.Joy].push(58625);
-        boxRewardsThreshold[BoxType.Joy].push(60625);
-        boxRewardsThreshold[BoxType.Joy].push(62625);
-        boxRewardsThreshold[BoxType.Joy].push(72625);
-        boxRewardsThreshold[BoxType.Joy].push(122625);
-        boxRewardsThreshold[BoxType.Joy].push(222625);
-        boxRewardsThreshold[BoxType.Joy].push(272625);
-        boxRewardsThreshold[BoxType.Joy].push(372625);
-        boxRewardsThreshold[BoxType.Joy].push(472625);
-        boxRewardsThreshold[BoxType.Joy].push(522625);
-        boxRewardsThreshold[BoxType.Joy].push(532625);
+        boxRewardsThreshold[BoxType.Joy].push(15000);
+        boxRewardsThreshold[BoxType.Joy].push(24000);
+        boxRewardsThreshold[BoxType.Joy].push(42000);
+        boxRewardsThreshold[BoxType.Joy].push(72000);
+        boxRewardsThreshold[BoxType.Joy].push(72500);
+        boxRewardsThreshold[BoxType.Joy].push(73500);
+        boxRewardsThreshold[BoxType.Joy].push(75500);
+        boxRewardsThreshold[BoxType.Joy].push(77500);
+        boxRewardsThreshold[BoxType.Joy].push(87500);
+        boxRewardsThreshold[BoxType.Joy].push(137500);
+        boxRewardsThreshold[BoxType.Joy].push(237500);
+        boxRewardsThreshold[BoxType.Joy].push(287500);
+        boxRewardsThreshold[BoxType.Joy].push(387500);
+        boxRewardsThreshold[BoxType.Joy].push(487500);
+        boxRewardsThreshold[BoxType.Joy].push(537500);
+        boxRewardsThreshold[BoxType.Joy].push(547500);
 
         boxRewards[BoxType.Joy].push(
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
@@ -216,24 +216,24 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
         );
         // Sip
 
-        boxRewardsThreshold[BoxType.Sip].push(125);
-        boxRewardsThreshold[BoxType.Sip].push(4625);
-        boxRewardsThreshold[BoxType.Sip].push(13625);
-        boxRewardsThreshold[BoxType.Sip].push(31625);
-        boxRewardsThreshold[BoxType.Sip].push(61625);
-        boxRewardsThreshold[BoxType.Sip].push(61750);
-        boxRewardsThreshold[BoxType.Sip].push(62000);
-        boxRewardsThreshold[BoxType.Sip].push(62500);
-        boxRewardsThreshold[BoxType.Sip].push(63500);
-        boxRewardsThreshold[BoxType.Sip].push(68500);
-        boxRewardsThreshold[BoxType.Sip].push(78500);
-        boxRewardsThreshold[BoxType.Sip].push(108500);
-        boxRewardsThreshold[BoxType.Sip].push(183500);
-        boxRewardsThreshold[BoxType.Sip].push(258500);
-        boxRewardsThreshold[BoxType.Sip].push(308500);
-        boxRewardsThreshold[BoxType.Sip].push(333500);
-        boxRewardsThreshold[BoxType.Sip].push(343500);
-        boxRewardsThreshold[BoxType.Sip].push(348500);
+        boxRewardsThreshold[BoxType.Sip].push(15000);
+        boxRewardsThreshold[BoxType.Sip].push(19500);
+        boxRewardsThreshold[BoxType.Sip].push(28500);
+        boxRewardsThreshold[BoxType.Sip].push(46500);
+        boxRewardsThreshold[BoxType.Sip].push(76500);
+        boxRewardsThreshold[BoxType.Sip].push(76625);
+        boxRewardsThreshold[BoxType.Sip].push(76875);
+        boxRewardsThreshold[BoxType.Sip].push(77375);
+        boxRewardsThreshold[BoxType.Sip].push(78375);
+        boxRewardsThreshold[BoxType.Sip].push(83375);
+        boxRewardsThreshold[BoxType.Sip].push(93375);
+        boxRewardsThreshold[BoxType.Sip].push(123375);
+        boxRewardsThreshold[BoxType.Sip].push(198375);
+        boxRewardsThreshold[BoxType.Sip].push(273375);
+        boxRewardsThreshold[BoxType.Sip].push(323375);
+        boxRewardsThreshold[BoxType.Sip].push(348375);
+        boxRewardsThreshold[BoxType.Sip].push(358375);
+        boxRewardsThreshold[BoxType.Sip].push(363375);
 
         boxRewards[BoxType.Sip].push(
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
@@ -340,25 +340,25 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
         );
         // Sweat
 
-        boxRewardsThreshold[BoxType.Sweat].push(125);
-        boxRewardsThreshold[BoxType.Sweat].push(4625);
-        boxRewardsThreshold[BoxType.Sweat].push(13625);
-        boxRewardsThreshold[BoxType.Sweat].push(31625);
-        boxRewardsThreshold[BoxType.Sweat].push(61625);
-        boxRewardsThreshold[BoxType.Sweat].push(61725);
-        boxRewardsThreshold[BoxType.Sweat].push(61975);
-        boxRewardsThreshold[BoxType.Sweat].push(62475);
-        boxRewardsThreshold[BoxType.Sweat].push(63475);
-        boxRewardsThreshold[BoxType.Sweat].push(65975);
-        boxRewardsThreshold[BoxType.Sweat].push(80975);
-        boxRewardsThreshold[BoxType.Sweat].push(120975);
-        boxRewardsThreshold[BoxType.Sweat].push(180975);
-        boxRewardsThreshold[BoxType.Sweat].push(280975);
-        boxRewardsThreshold[BoxType.Sweat].push(360975);
-        boxRewardsThreshold[BoxType.Sweat].push(420975);
-        boxRewardsThreshold[BoxType.Sweat].push(460975);
-        boxRewardsThreshold[BoxType.Sweat].push(480975);
-        boxRewardsThreshold[BoxType.Sweat].push(490975);
+        boxRewardsThreshold[BoxType.Sweat].push(15000);
+        boxRewardsThreshold[BoxType.Sweat].push(19500);
+        boxRewardsThreshold[BoxType.Sweat].push(28500);
+        boxRewardsThreshold[BoxType.Sweat].push(46500);
+        boxRewardsThreshold[BoxType.Sweat].push(76500);
+        boxRewardsThreshold[BoxType.Sweat].push(76600);
+        boxRewardsThreshold[BoxType.Sweat].push(76850);
+        boxRewardsThreshold[BoxType.Sweat].push(77350);
+        boxRewardsThreshold[BoxType.Sweat].push(78350);
+        boxRewardsThreshold[BoxType.Sweat].push(80850);
+        boxRewardsThreshold[BoxType.Sweat].push(95850);
+        boxRewardsThreshold[BoxType.Sweat].push(135850);
+        boxRewardsThreshold[BoxType.Sweat].push(195850);
+        boxRewardsThreshold[BoxType.Sweat].push(295850);
+        boxRewardsThreshold[BoxType.Sweat].push(375850);
+        boxRewardsThreshold[BoxType.Sweat].push(435850);
+        boxRewardsThreshold[BoxType.Sweat].push(475850);
+        boxRewardsThreshold[BoxType.Sweat].push(495850);
+        boxRewardsThreshold[BoxType.Sweat].push(505850);
 
         boxRewards[BoxType.Sweat].push(
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
@@ -469,26 +469,26 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
 
         // Treasure
 
-        boxRewardsThreshold[BoxType.Treasure].push(125);
-        boxRewardsThreshold[BoxType.Treasure].push(4625);
-        boxRewardsThreshold[BoxType.Treasure].push(13625);
-        boxRewardsThreshold[BoxType.Treasure].push(31625);
-        boxRewardsThreshold[BoxType.Treasure].push(61625);
-        boxRewardsThreshold[BoxType.Treasure].push(61675);
-        boxRewardsThreshold[BoxType.Treasure].push(61775);
-        boxRewardsThreshold[BoxType.Treasure].push(62025);
-        boxRewardsThreshold[BoxType.Treasure].push(62525);
-        boxRewardsThreshold[BoxType.Treasure].push(63525);
-        boxRewardsThreshold[BoxType.Treasure].push(66025);
-        boxRewardsThreshold[BoxType.Treasure].push(76025);
-        boxRewardsThreshold[BoxType.Treasure].push(116025);
-        boxRewardsThreshold[BoxType.Treasure].push(196025);
-        boxRewardsThreshold[BoxType.Treasure].push(266025);
-        boxRewardsThreshold[BoxType.Treasure].push(321025);
-        boxRewardsThreshold[BoxType.Treasure].push(356025);
-        boxRewardsThreshold[BoxType.Treasure].push(376025);
-        boxRewardsThreshold[BoxType.Treasure].push(386025);
-        boxRewardsThreshold[BoxType.Treasure].push(391025);
+        boxRewardsThreshold[BoxType.Treasure].push(15000);
+        boxRewardsThreshold[BoxType.Treasure].push(19500);
+        boxRewardsThreshold[BoxType.Treasure].push(28500);
+        boxRewardsThreshold[BoxType.Treasure].push(46500);
+        boxRewardsThreshold[BoxType.Treasure].push(76500);
+        boxRewardsThreshold[BoxType.Treasure].push(76550);
+        boxRewardsThreshold[BoxType.Treasure].push(76650);
+        boxRewardsThreshold[BoxType.Treasure].push(76900);
+        boxRewardsThreshold[BoxType.Treasure].push(77400);
+        boxRewardsThreshold[BoxType.Treasure].push(78400);
+        boxRewardsThreshold[BoxType.Treasure].push(80900);
+        boxRewardsThreshold[BoxType.Treasure].push(90900);
+        boxRewardsThreshold[BoxType.Treasure].push(130900);
+        boxRewardsThreshold[BoxType.Treasure].push(210900);
+        boxRewardsThreshold[BoxType.Treasure].push(280900);
+        boxRewardsThreshold[BoxType.Treasure].push(335900);
+        boxRewardsThreshold[BoxType.Treasure].push(370900);
+        boxRewardsThreshold[BoxType.Treasure].push(390900);
+        boxRewardsThreshold[BoxType.Treasure].push(400900);
+        boxRewardsThreshold[BoxType.Treasure].push(405900);
 
         boxRewards[BoxType.Treasure].push(
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})

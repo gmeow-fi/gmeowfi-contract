@@ -7,12 +7,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
 import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
 import "../../interfaces/IGmeowFiMultiNFT.sol";
 import "../../interfaces/IXGM.sol";
-import "../../interfaces/IGmeowFiNFT.sol";
 import "../../interfaces/IWETH.sol";
 import "./GMeowfiBoxTypeV1.sol";
 
@@ -20,11 +19,12 @@ contract GMeowFiBoxV1 is
     Ownable,
     ReentrancyGuard,
     IEntropyConsumer,
-    IERC721Receiver
+    IERC1155Receiver
 {
     using EnumerableSet for EnumerableSet.AddressSet;
     using Address for address;
 
+    uint256 public constant MEOW_CHRONICLES_ID = 0;
     uint256 public constant TICKET_ID = 1;
     uint256 public constant FUN_CLAW_ID = 2;
     uint256 public constant JOY_CLAW_ID = 3;
@@ -35,7 +35,6 @@ contract GMeowFiBoxV1 is
     uint256 public boxRefillPercent = 80;
 
     IGmeowFiMultiNFT public gmeowFiMultiNFT;
-    IGmeowFiNFT public gmeowFiNFT;
     IGMeowFiBoxStorageV1 public gmeowFiBoxStorage;
     IXGM public xGM;
     IWETH public weth;
@@ -80,7 +79,6 @@ contract GMeowFiBoxV1 is
 
     constructor(
         IGmeowFiMultiNFT _gmeowFiMultiNFT,
-        IGmeowFiNFT _gmeowFiNFT,
         IGMeowFiBoxStorageV1 _gmeowFiBoxStorage,
         IXGM _xGM,
         IWETH _weth,
@@ -89,7 +87,6 @@ contract GMeowFiBoxV1 is
         address _devWallet
     ) Ownable(msg.sender) {
         gmeowFiMultiNFT = _gmeowFiMultiNFT;
-        gmeowFiNFT = _gmeowFiNFT;
         gmeowFiBoxStorage = _gmeowFiBoxStorage;
         xGM = _xGM;
         weth = _weth;
@@ -210,24 +207,33 @@ contract GMeowFiBoxV1 is
         );
         uint256 xGMAmount;
         uint256 ethAmount;
-        uint256 passAmount;
+        uint256 chronicleAmount;
         // Do something with the random number
         for (uint256 i = 0; i < requestRandom.amount; i++) {
             (
                 uint256 rewardXGM,
                 uint256 rewardETH,
-                uint256 rewardPass
+                uint256 rewardChronicle
             ) = _openBox(
                     requestRandom,
                     randomNumber,
                     i,
-                    passAmount >= gmeowFiNFT.balanceOf(address(this))
+                    chronicleAmount >=
+                        gmeowFiMultiNFT.balanceOf(
+                            address(this),
+                            MEOW_CHRONICLES_ID
+                        )
                 );
             xGMAmount += rewardXGM;
             ethAmount += rewardETH;
-            passAmount += rewardPass;
+            chronicleAmount += rewardChronicle;
         }
-        _transferReward(requestRandom.user, xGMAmount, ethAmount, passAmount);
+        _transferReward(
+            requestRandom.user,
+            xGMAmount,
+            ethAmount,
+            chronicleAmount
+        );
         gmeowFiMultiNFT.mint(
             requestRandom.user,
             TICKET_ID,
@@ -239,7 +245,7 @@ contract GMeowFiBoxV1 is
             requestRandom.amount * ticketRewards[requestRandom.boxType],
             xGMAmount,
             ethAmount,
-            passAmount
+            chronicleAmount
         );
     }
 
@@ -247,10 +253,10 @@ contract GMeowFiBoxV1 is
         RequestRandom storage requestRandom,
         bytes32 randomNumber,
         uint256 seed,
-        bool isExceedPass
+        bool isExceedChronicle
     )
         internal
-        returns (uint256 xGMAmount, uint256 ethAmount, uint256 passAmount)
+        returns (uint256 xGMAmount, uint256 ethAmount, uint256 chronicleAmount)
     {
         randomNumber = keccak256(
             abi.encodePacked(
@@ -267,14 +273,14 @@ contract GMeowFiBoxV1 is
             requestRandom.boxType,
             random
         );
-        if (isExceedPass && reward.availableNFT) {
+        if (isExceedChronicle && reward.availableNFT) {
             reward = gmeowFiBoxStorage.getBoxReward(requestRandom.boxType, 1);
         }
         emit BoxOpened(
             requestRandom.user,
+            ticketRewards[requestRandom.boxType],
             reward.xGMAmount,
             reward.ethAmount,
-            ticketRewards[requestRandom.boxType],
             reward.availableNFT
         );
         return (
@@ -288,18 +294,17 @@ contract GMeowFiBoxV1 is
         address to,
         uint256 xGMAmount,
         uint256 ethAmount,
-        uint256 passAmount
+        uint256 chronicleAmount
     ) internal {
-        if (passAmount > 0) {
-            for (uint256 i = 0; i < passAmount; i++) {
-                gmeowFiNFT.safeTransferFrom(
-                    address(this),
-                    to,
-                    gmeowFiNFT.tokenOfOwnerByIndex(address(this), 0),
-                    ""
-                );
-                totalRewardEarned.totalNFT += 1;
-            }
+        if (chronicleAmount > 0) {
+            gmeowFiMultiNFT.safeTransferFrom(
+                address(this),
+                to,
+                MEOW_CHRONICLES_ID,
+                chronicleAmount,
+                ""
+            );
+            totalRewardEarned.totalNFT += chronicleAmount;
         }
         if (xGMAmount > 0) {
             xGM.transfer(to, xGMAmount);
@@ -334,33 +339,20 @@ contract GMeowFiBoxV1 is
         }
     }
 
-    function withdrawNFT(address nft, uint256 tokenId) external onlyOwner {
-        IERC721(nft).transferFrom(address(this), msg.sender, tokenId);
-    }
-
-    function withdrawPass(uint256 amount) external onlyOwner {
-        require(
-            gmeowFiNFT.balanceOf(address(this)) >= amount,
-            "Insufficient pass"
+    function withdrawNFT(uint256 id, uint256 amount) external onlyOwner {
+        gmeowFiMultiNFT.safeTransferFrom(
+            address(this),
+            msg.sender,
+            id,
+            amount,
+            ""
         );
-        for (uint256 i = 0; i < amount; i++) {
-            gmeowFiNFT.safeTransferFrom(
-                address(this),
-                msg.sender,
-                gmeowFiNFT.tokenOfOwnerByIndex(address(this), 0),
-                ""
-            );
-        }
     }
 
     function setGmeowFiMultiNFT(
         IGmeowFiMultiNFT _gmeowFiMultiNFT
     ) external onlyOwner {
         gmeowFiMultiNFT = _gmeowFiMultiNFT;
-    }
-
-    function setGmeowFiNFT(IGmeowFiNFT _gmeowFiNFT) external onlyOwner {
-        gmeowFiNFT = _gmeowFiNFT;
     }
 
     function setEntropy(
@@ -399,13 +391,30 @@ contract GMeowFiBoxV1 is
         return (size > 0);
     }
 
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes calldata
-    ) external pure returns (bytes4) {
-        return this.onERC721Received.selector;
+    function onERC1155Received(
+        address operator,
+        address from,
+        uint256 id,
+        uint256 value,
+        bytes calldata data
+    ) external returns (bytes4) {
+        if (
+            id == MEOW_CHRONICLES_ID && msg.sender == address(gmeowFiMultiNFT)
+        ) {
+            return this.onERC1155Received.selector;
+        }
+    }
+
+    function onERC1155BatchReceived(
+        address operator,
+        address from,
+        uint256[] calldata ids,
+        uint256[] calldata values,
+        bytes calldata data
+    ) external returns (bytes4) {
+        if (msg.sender == address(gmeowFiMultiNFT)) {
+            return this.onERC1155BatchReceived.selector;
+        }
     }
 
     function supportsInterface(
@@ -413,6 +422,6 @@ contract GMeowFiBoxV1 is
     ) external pure returns (bool) {
         return
             interfaceId == type(IERC165).interfaceId ||
-            interfaceId == type(IERC721Receiver).interfaceId;
+            interfaceId == type(IERC1155Receiver).interfaceId;
     }
 }

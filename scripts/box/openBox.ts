@@ -6,8 +6,8 @@ async function main() {
   console.log(`Executing with the account: ${deployer.address}`);
 
   const gMeowFiBox = await ethers.getContractAt(
-    "GMeowFiBox",
-    "0xFd7C4f40C65307c0176Cb7F32EC916afeb090211"
+    "GMeowFiBoxV1",
+    "0xa790a1aa213A03b4ba783B96795A0E4e7336189a"
   );
 
   const usde = await ethers.getContractAt(
@@ -23,31 +23,41 @@ async function main() {
     "0x87A4f586aea0C47a1f615a13F9b6acfFCF59452B"
   );
 
-  // await sendTxn(
-  //   paw.deposit(BigInt("10000") * (await usde.decimals())),
-  //   "paw deposit"
-  // );
-  // await sendTxn(
-  //   usde.approve(await gmeowFiBox.getAddress(), ethers.MaxUint256),
-  //   "usde approve"
-  // );
-  // await sendTxn(
-  //   paw.approve(await gmeowFiBox.getAddress(), ethers.MaxUint256),
-  //   "paw approve"
-  // );
-  // await sendTxn(
-  //   multiNFT.setApprovalForAll(await gmeowFiBox.getAddress(), true),
-  //   "multiNFT setApprovalForAll"
-  // );
-  await sendTxn(
-    multiNFT.mintBatch(
-      "0x04a4c59A13F4eDC0990f4E153841C4251021aed8",
-      [1, 2, 3, 4, 5, 6],
-      [10, 10, 10, 10, 10, 10],
-      "0x"
-    ),
-    "mintBatch"
+  const weth = await ethers.getContractAt(
+    "IWETH",
+    "0x4200000000000000000000000000000000000006"
   );
+  await sendTxn(weth.deposit({ value: ethers.parseEther("2") }), "deposit");
+
+  await sendTxn(
+    weth.transfer(await gMeowFiBox.getAddress(), ethers.parseEther("2")),
+    "transfer"
+  );
+
+  // await sendTxn(
+  //   multiNFT.mintBatch(
+  //     deployer.address,
+  //     [1, 2, 3, 4, 5, 6],
+  //     [200, 200, 200, 200, 200, 200],
+  //     "0x"
+  //   ),
+  //   "mintBatch"
+  // );
+
+  // await sendTxn(
+  //   multiNFT.setApprovalForAll(await gMeowFiBox.getAddress(), true),
+  //   "setApprovalForAll"
+  // );
+
+  // for (let i = 0; i < 5; i++) {
+  //   await sendTxn(
+  //     gMeowFiBox.openBox(100, i, 1, false, {
+  //       value: await gMeowFiBox.txFees(i),
+  //       gasLimit: 10000000,
+  //     }),
+  //     `openBox ${i}`
+  //   );
+  // }
 }
 
 main()

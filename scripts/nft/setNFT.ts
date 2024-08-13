@@ -1,15 +1,13 @@
 import { ethers } from "hardhat";
-import { deployContract, sendTxn } from "../helper";
-import { GMeowFiMultiNFT } from "../../typechain-types";
+import { sendTxn } from "../helper";
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-  console.log(`Deploying contracts with the account: ${deployer.address}`);
-  const multiNFT = await deployContract<GMeowFiMultiNFT>(
+  const [executor] = await ethers.getSigners();
+  console.log(`Setting NFTs with the account: ${executor.address}`);
+
+  const multiNFT = await ethers.getContractAt(
     "GMeowFiMultiNFT",
-    [],
-    "GMeowFiMultiNFT",
-    {}
+    "0x87A4f586aea0C47a1f615a13F9b6acfFCF59452B"
   );
   await sendTxn(
     multiNFT.setNFT(
