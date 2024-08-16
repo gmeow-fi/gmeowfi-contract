@@ -13,7 +13,5 @@ interface IXGM is IERC20 {
     function convertTo(uint256 amount, address to) external;
     function deallocateFromUsage(address userAddress, uint256 amount) external;
 
-    function isTransferWhitelisted(
-        address account
-    ) external view returns (bool);
+    function whitelistTransfer(address account) external view returns (bool);
 }
