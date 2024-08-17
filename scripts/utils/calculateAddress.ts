@@ -5,9 +5,9 @@ import { Mutex } from "async-mutex";
 let count = 0;
 const mutex = new Mutex();
 
-async function calculateAddress(suffix: string) {
-  const factoryAddress = "0xAb38aa4A581351416a92815cf4697D4f58c4fdc6";
-  const ContractFactory = await ethers.getContractFactory("GM");
+async function calculateAddress(suffixs: string[]) {
+  const factoryAddress = "0x2F045F8784C45604bcbE96550EB728Ba1d330a17";
+  const ContractFactory = await ethers.getContractFactory("PAWToken");
   while (true) {
     const salt = genRandomSalt();
     const hash = ethers.keccak256(
@@ -22,8 +22,15 @@ async function calculateAddress(suffix: string) {
       )
     );
     const address = "0x" + hash.slice(26);
-    if (address.endsWith(suffix)) {
-      console.log(`Found address: ${address}, salt: ${salt}`);
+    let found = false;
+    for (const suffix of suffixs) {
+      if (address.endsWith(suffix)) {
+        console.log(`Found address: ${address}, salt: ${salt}`);
+        found = true;
+        break;
+      }
+    }
+    if (found) {
       break;
     }
     const release = await mutex.acquire();
@@ -43,9 +50,26 @@ function genRandomSalt() {
 
 async function main() {
   const numOfProcess = 200;
-  const suffix = "888888";
+  const suffixs = [
+    "11111",
+    "22222",
+    "33333",
+    "44444",
+    "55555",
+    "66666",
+    "77777",
+    "88888",
+    "99999",
+    "00000",
+    "aaaaa",
+    "bbbbb",
+    "ccccc",
+    "ddddd",
+    "eeeee",
+    "fffff",
+  ];
   const promises = Array.from({ length: numOfProcess }, (_, i) =>
-    calculateAddress(suffix)
+    calculateAddress(suffixs)
   );
   try {
     await Promise.race(promises);

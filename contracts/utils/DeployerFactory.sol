@@ -19,7 +19,11 @@ contract DeployerFactory {
         return address(uint160(uint256(hash)));
     }
 
-    function deploy(bytes memory bytecode, uint256 _salt) public payable {
+    function deploy(
+        bytes memory bytecode,
+        uint256 _salt,
+        bytes memory initialize
+    ) public payable {
         address addr;
         assembly {
             addr := create2(
@@ -34,7 +38,10 @@ contract DeployerFactory {
                 revert(0, 0)
             }
         }
-
         emit Deployed(addr, _salt);
+        if (initialize.length > 0) {
+            (bool success, ) = addr.call(initialize);
+            require(success, "Failed to initialize");
+        }
     }
 }

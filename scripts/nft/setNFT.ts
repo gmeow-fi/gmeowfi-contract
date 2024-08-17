@@ -7,14 +7,14 @@ async function main() {
 
   const multiNFT = await ethers.getContractAt(
     "GMeowFiMultiNFT",
-    "0x87A4f586aea0C47a1f615a13F9b6acfFCF59452B"
+    "0xD5769BD2B7064c35991dD099c084C7e6195DC5de"
   );
   await sendTxn(
     multiNFT.setNFT(
       0,
       "Meow Chronicles",
       "GMeowFi-MC",
-      "https://gmeowfi.com/api/nft/0/",
+      "ipfs://QmafnHKaBLRkahmDEmLzp3fUUXojKe6FKEWgFGSZk2EbXL",
       100000
     ),
     "setNFT Chronicles"
@@ -24,7 +24,7 @@ async function main() {
       1,
       "GMeowFi Lottery Ticket",
       "GMeowFi-LT",
-      "https://gmeowfi.com/api/nft/1/",
+      "ipfs://QmRCzMV9AKZrW89qhi8a65HZXPY45uQBGBWEGZXEHUeUSd",
       ethers.MaxUint256
     ),
     "setNFT Lottery Ticket"
@@ -34,7 +34,7 @@ async function main() {
       2,
       "GMeowFi Fun Claw",
       "GMeowFi-FC",
-      "https://gmeowfi.com/api/nft/2/",
+      "ipfs://Qmd2wcgL6Lmrzbb8fjHeycFYJgHrWRp7ZbJBFxkTxQb52k",
       ethers.MaxUint256
     ),
     "setNFT Fun Claw"
@@ -44,7 +44,7 @@ async function main() {
       3,
       "GMeowFi Joy Claw",
       "GMeowFi-JC",
-      "https://gmeowfi.com/api/nft/3/",
+      "ipfs://QmUdMaPUZJwpdvbUj6XKyCmJEgJHy8gsam7HiD9QxMpB23",
       ethers.MaxUint256
     ),
     "setNFT Joy Claw"
@@ -54,7 +54,7 @@ async function main() {
       4,
       "GMeowFi Sip Claw",
       "GMeowFi-SC",
-      "https://gmeowfi.com/api/nft/4/",
+      "ipfs://QmQRvMrKE8irJR5qbbDtJ2rcyomMwLkyUyoejtG81pg2tB",
       ethers.MaxUint256
     ),
     "setNFT Sip Claw"
@@ -64,7 +64,7 @@ async function main() {
       5,
       "GMeowFi Sweat Claw",
       "GMeowFi-SWC",
-      "https://gmeowfi.com/api/nft/5/",
+      "ipfs://Qmb7qQYm6hUdX8q5t6zjUuykKiyXqvGQVbcogdhNje8EjM",
       ethers.MaxUint256
     ),
     "setNFT Sweat Claw"
@@ -74,7 +74,7 @@ async function main() {
       6,
       "GMeowFi Treasure Claw",
       "GMeowFi-TC",
-      "https://gmeowfi.com/api/nft/6/",
+      "ipfs://QmUDqVWsztunK6s3mhftsjMwcgMut6YZGtCRMR1ykTdPgU",
       ethers.MaxUint256
     ),
     "setNFT Treasure Claw"

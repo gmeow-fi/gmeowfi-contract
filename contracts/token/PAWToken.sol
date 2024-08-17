@@ -29,6 +29,7 @@ contract PAWToken is
     uint256 public burnFee = 20; // 0.2%
     address public burnFeeTo;
     IERC20 public usd;
+    bool public initialized;
 
     error InvalidFeeTo(address feeTo);
     error InvalidWithdrawFee(uint256 protocolFee, uint256 burnFee);
@@ -46,16 +47,21 @@ contract PAWToken is
     event UpdateFeeTo(address indexed feeTo);
     event UpdateWithdrawFee(uint256 protocolFee, uint256 burnFee);
 
-    constructor(
+    constructor() ERC20("PAW Token", "PAW") ERC20Permit("PAW") {}
+
+    function initialize(
         IERC20 _usd,
         address _burnFeeTo,
-        uint8 decimals_
-    ) ERC20("PAW Token", "PAW") ERC20Permit("PAW") {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(FOUNDATION_ROLE, msg.sender);
+        uint8 decimals_,
+        address admin
+    ) public {
+        require(!initialized, "Already initialized");
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(FOUNDATION_ROLE, admin);
         burnFeeTo = _burnFeeTo;
         usd = _usd;
         _decimals = decimals_;
+        initialized = true;
     }
 
     function decimals() public view override returns (uint8) {

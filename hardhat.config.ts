@@ -32,6 +32,12 @@ const config: HardhatUserConfig = {
       gasPrice: 20000000000,
       accounts: [process.env.GANACHE_PRIVATE_KEY || ""],
     },
+    bsctestnet: {
+      url: "https://endpoints.omniatech.io/v1/bsc/testnet/public",
+      accounts: process.env.BSC_TESTNET_PRIVATE_KEY
+        ? [process.env.BSC_TESTNET_PRIVATE_KEY]
+        : [],
+    },
     // for Sepolia testnet
     zircuitTestnet: {
       url: `https://zircuit1.p2pify.com/`,
@@ -48,8 +54,9 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      zircuitTestnet: process.env.SCAN_API_KEY || "",
+      zircuitTestnet: process.env.SCAN_API_KEY_TESTNET || "",
       zircuit: process.env.SCAN_API_KEY || "",
+      bsctestnet: process.env.SCAN_API_KEY_BSC_TESTNET || "",
     },
     customChains: [
       {
@@ -67,6 +74,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://explorer.zircuit.com/api/contractVerifyHardhat",
           browserURL: "https://explorermainnet.zircuit.com/",
+        },
+      },
+      {
+        network: "bsctestnet",
+        chainId: 97,
+        urls: {
+          apiURL: "https://api-testnet.bscscan.com/api",
+          browserURL: "https://testnet.bscscan.com",
         },
       },
     ],
