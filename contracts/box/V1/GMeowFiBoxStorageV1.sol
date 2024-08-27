@@ -239,16 +239,16 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
         );
         boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 100 ether})
         );
         boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.5 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 50 ether})
         );
         boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.3 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 30 ether})
         );
         boxRewards[BoxType.Sip].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 10 ether})
         );
 
         boxRewards[BoxType.Sip].push(
@@ -364,16 +364,16 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
         );
         boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 100 ether})
         );
         boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.5 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 50 ether})
         );
         boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.3 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 30 ether})
         );
         boxRewards[BoxType.Sweat].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 10 ether})
         );
 
         boxRewards[BoxType.Sweat].push(
@@ -494,16 +494,16 @@ contract GMeowFiBoxStorageV1 is IGMeowFiBoxStorageV1 {
             BoxReward({availableNFT: true, ethAmount: 0, xGMAmount: 0})
         );
         boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 100 ether})
         );
         boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.5 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 50 ether})
         );
         boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.3 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 30 ether})
         );
         boxRewards[BoxType.Treasure].push(
-            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 0.1 ether})
+            BoxReward({availableNFT: false, ethAmount: 0, xGMAmount: 10 ether})
         );
 
         boxRewards[BoxType.Treasure].push(

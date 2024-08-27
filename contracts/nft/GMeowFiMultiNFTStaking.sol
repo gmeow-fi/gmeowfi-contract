@@ -78,6 +78,7 @@ contract GMeowFiMultiNFTStaking is
     }
 
     struct UserDeposit {
+        uint256 depositId;
         uint256 nftId;
         uint256 amount;
         uint256 timestamp;
@@ -148,6 +149,7 @@ contract GMeowFiMultiNFTStaking is
         user.rewardDebt = (user.amount * accTokenPerShare) / PRECISION_FACTOR;
 
         UserDeposit memory userDeposit = UserDeposit({
+            depositId: deposits.length,
             nftId: _nftId,
             amount: _amount,
             timestamp: block.timestamp
@@ -383,6 +385,18 @@ contract GMeowFiMultiNFTStaking is
                 rewardDebt: _userInfo.rewardDebt,
                 nftStaked: nftStaked
             });
+    }
+
+    function getUserDeposits(
+        address _user
+    ) external view returns (UserDeposit[] memory) {
+        UserDeposit[] memory _userDeposits = new UserDeposit[](
+            userDeposits[_user].length()
+        );
+        for (uint256 i = 0; i < userDeposits[_user].length(); i++) {
+            _userDeposits[i] = deposits[userDeposits[_user].at(i)];
+        }
+        return _userDeposits;
     }
 
     function pause() public onlyOwner {

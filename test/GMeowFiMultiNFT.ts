@@ -25,7 +25,7 @@ describe("GMeowFiMultiNFT", function () {
       1000000000,
       18,
     ]);
-    
+
     multiNFT = await deployMultiNFTForTest();
 
     startTime = (await ethers.provider.getBlock("latest"))?.timestamp!! + 100;
@@ -44,7 +44,7 @@ describe("GMeowFiMultiNFT", function () {
       rewardClawDivisor,
       rewardClawPeriod,
     ]);
-    multiNFTStaking.setNFTIds([0]);
+    multiNFTStaking.setNFTIds([0], true);
     // await multiNFT.mint(await user1.getAddress(), multiNFTStaking.
     await rewardToken.transfer(await multiNFTStaking.getAddress(), totalReward);
     await multiNFT.safeTransferFrom(
@@ -54,10 +54,7 @@ describe("GMeowFiMultiNFT", function () {
       100,
       "0x"
     );
-
   });
 
-  it("should be able to stake", async function () {
-
-  });
+  it("should be able to stake", async function () {});
 });
